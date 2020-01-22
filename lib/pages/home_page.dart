@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_shop/config/color.dart';
 import 'package:flutter_shop/config/index.dart';
 import 'package:flutter_shop/service/http_service.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -44,11 +46,13 @@ class _HomePageState extends State<HomePage> //不被刷新
                 loadReadyText: KString.loadReady,
               ),
               child: ListView(
-                children: <Widget>[],
+                children: <Widget>[
+                  SwiperDiy(
+                    swiperDataList: swiperDataList,
+                  )
+                ],
               ),
-              loadMore: () async {
-
-              },
+              loadMore: () async {},
             );
           } else {
             return Container(
@@ -70,5 +74,35 @@ class _HomePageState extends State<HomePage> //不被刷新
     // TODO: implement initState
     super.initState();
     print("首页刷新了！");
+  }
+}
+
+class SwiperDiy extends StatelessWidget {
+  final List swiperDataList;
+
+  SwiperDiy({Key key, this.swiperDataList}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Container(
+      color: Colors.white,
+      height: ScreenUtil().setHeight(333),
+      width: ScreenUtil().setWidth(750),
+      child: Swiper(
+        itemBuilder: (context, pos) {
+          return InkWell(
+            onTap: () {},
+            child: Image.network(
+              "${swiperDataList[pos]['image']}",
+              fit: BoxFit.cover,
+            ),
+          );
+        },
+        itemCount: swiperDataList.length,
+        pagination: SwiperPagination(),
+        autoplay: true,
+      ),
+    );
   }
 }
